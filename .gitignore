@@ -60,3 +60,7 @@ __Builds/docs/
 
 # driver packages
 *.zip
+
+# standalone release packaging output
+artifacts/
+build-release-msvc/
