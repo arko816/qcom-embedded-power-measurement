@@ -3,7 +3,7 @@
 
 #include "PreferencesDialog.h"
 
-// TAC
+// EPM Configuration Editor
 #include "EPMEditorDefines.h"
 #include "EPMConfigurationApplication.h"
 
@@ -47,40 +47,6 @@ void PreferencesDialog::on__browseForLogPathButton_clicked()
 void PreferencesDialog::on_accepted()
 {
 	bool changed(false);
-
-	AlpacaSettings settings(kAppName);
-
-/*	settings.beginGroup(kTacLoggingGroup);
-
-	bool temp;
-
-	temp = settings.value(kTacLoggingEnabled, false).toBool();
-	if (temp != _loggingCB->isChecked())
-	{
-		changed = true;
-	}
-	else
-	{
-		QString tempStr = settings.value(kLogLocation, defaultLoggingPath(kAppName)).toString();
-		if (tempStr.toLower() != _logLocation->text().toLower())
-		{
-			changed = true;
-		}
-		else if (_powerOnDelaySpin->value() != settings.value(kPowerOnDelay, 1300).toInt())
-		{
-			changed = true;
-		}
-	}
-
-	if (changed)
-	{
-		settings.setValue(kTacLoggingEnabled, _loggingCB->isChecked());
-		settings.setValue(kLogLocation, _logLocation->text());
-		settings.setValue(kPowerOnDelay, _powerOnDelaySpin->value());
-	}
-
-	settings.endGroup();
-	*/
 
 	if (changed)
 		emit preferencesChanged(kEPMConfigurationGroup);

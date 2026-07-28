@@ -4,24 +4,13 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="TACDev",
-    version="1.0.1",
-    description="X Platform TACDev",
-    author="Biswajit Roy",
-    author_email="biswroy@qti.qualcomm.com",
-    keywords="TACDev TAC",
-    packages=find_packages(exclude=["EPMDev", "UDASDev"]),
-    license="Qualcomm Inc. Proprietary",
-)
-
-setup(
     name="EPMDev",
     version="1.0.1",
     description="X Platform EPMDev",
     author="Biswajit Roy",
     author_email="biswroy@qti.qualcomm.com",
     keywords="EPMDev EPM",
-    packages=find_packages(exclude=["TACDev", "UDASDev"]),
+    packages=find_packages(exclude=["UDASDev"]),
     license="Qualcomm Inc. Proprietary",
 )
 
@@ -32,6 +21,6 @@ setup(
     author="Biswajit Roy",
     author_email="biswroy@qti.qualcomm.com",
     keywords="UDASDev EPM",
-    packages=find_packages(exclude=["TACDev", "EPMDev"]),
+    packages=find_packages(exclude=["EPMDev"]),
     license="Qualcomm Inc. Proprietary",
 )

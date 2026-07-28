@@ -10,10 +10,6 @@
 #include "EPMEditorDefines.h"
 #include "EPMConfigurationApplication.h"
 
-#ifdef Q_OS_WIN
-#include "QTExcel.h"
-#endif
-
 // libEPM
 #include "ColorConversion.h"
 #include "EPMConfigFile.h"
@@ -66,13 +62,6 @@ EPMConfigurationWindow::EPMConfigurationWindow
 
 	QSize windowSize = settings.value("size", this->size()).toSize();
 	QPoint windowPosition = settings.value("pos", _nextWindowPos).toPoint();
-
-#ifdef Q_OS_WINDOWS
-	actionImport_Excel_Template->setEnabled(true);
-	actionImport_Excel_Template->setToolTip("Import Power Measurement Excel Template");
-#else
-	actionImport_Excel_Template->setEnabled(false);
-#endif
 
 	_nwgt = new NotificationWidget(_statusBar);
 
@@ -304,11 +293,6 @@ void EPMConfigurationWindow::on_actionSave_triggered()
 void EPMConfigurationWindow::on_actionSave_As_triggered()
 {
 	saveAs();
-}
-
-void EPMConfigurationWindow::on_actionImport_Excel_Template_triggered()
-{
-	importExcel();
 }
 
 void EPMConfigurationWindow::on_actionExit_triggered()
@@ -605,157 +589,6 @@ bool EPMConfigurationWindow::openFile
 			result = true;
 		}
 	}
-
-	return result;
-}
-
-bool EPMConfigurationWindow::importExcel()
-{
-	bool result(false);
-
-#ifdef Q_OS_WIN
-	AlpacaSettings settings(kAppName);
-
-	QString initialDir = settings.value(kLastImportPath, documentsDataPath(kAppName)).toString();
-
-	QString filters = "Excel Power Template File (*.xlsx)";
-
-	QString fileName = QFileDialog::getOpenFileName(this, "Open an Excel Power Template File File", initialDir, filters);
-	if (fileName.isEmpty() == false)
-	{
-		QFileInfo fileInfo(fileName);
-
-		settings.setValue(kLastImportPath, fileInfo.absolutePath());
-
-		EPMConfigFile* epmFile = new EPMConfigFile;
-		if (epmFile != Q_NULLPTR)
-		{
-			QTExcel qtExcel;
-
-			if (qtExcel.open(fileName, true) == true)
-			{
-				int fileFormat;
-				QString value;
-				QString columnKey;
-				int intValue;
-				int row(4);
-				bool gettingCommonSettings = true;
-				bool gettingChannels(true);
-
-				columnKey = qtExcel.getCellValue("A1").toString().toLower();
-
-				if (columnKey == "file format")
-				{
-					QString reference;
-
-					result = true;
-					fileFormat = qtExcel.getCellValue("B1").toInt();
-
-					while (gettingCommonSettings)
-					{
-						reference = QString("A%1").arg(row);
-						columnKey = qtExcel.getCellValue(reference).toString().toLower();
-						if (columnKey == ("type"))
-						{
-							gettingCommonSettings = false;
-						}
-						else
-						{
-							reference = QString("B%1").arg(row);
-							if (columnKey == "target")
-							{
-								value = qtExcel.getCellValue(reference).toString();
-								epmFile->setTarget(value);
-							}
-							else if (columnKey == "label")
-							{
-								value = qtExcel.getCellValue(reference).toString();
-								epmFile->setLabel(value);
-							}
-							else if (columnKey == "description")
-							{
-								value = qtExcel.getCellValue(reference).toString();
-								epmFile->setDescription(value);
-							}
-							else if (columnKey == "spm_version")
-							{
-								intValue = qtExcel.getCellValue(reference).toInt() - 4;
-								epmFile->setSpmVersion(static_cast<SPMVersion>(intValue));
-							}
-						}
-
-						row++;
-
-						if (row > 100) // don't want a run away loop
-						{
-							gettingCommonSettings = false;
-							gettingChannels = false;
-							row = 1000;
-						}
-					}
-
-					if (fileFormat == 1)
-						epmFile->setSpmVersion(eLegacyVersion);
-
-					while (gettingChannels)
-					{
-						try
-						{
-							reference = QString("A%1").arg(row);
-							value = qtExcel.getCellValue(reference).toString();
-							columnKey = value.toUpper();
-
-							if (columnKey.isEmpty())
-							{
-								gettingChannels = false;
-							}
-							else if (columnKey == kMarker || columnKey == kSPM || columnKey == kRCM)
-							{
-								EPMChannel epmChannel = EPMChannel(new _EPMChannel);
-								bool okay;
-
-								epmChannel->setChannelColor(epmFile->nextColor());
-								epmChannel->setIndexType(StringToEPMIndexType(columnKey));
-								epmChannel->setIndex(qtExcel.getCellValue(QString("B%1").arg(row)).toUInt(&okay));
-								if (!okay)
-									epmChannel->setIndex(static_cast<quint32>(-1));
-								epmChannel->setChannelName(qtExcel.getCellValue(QString("C%1").arg(row)).toString());
-								epmChannel->setCategory(qtExcel.getCellValue(QString("D%1").arg(row)).toString());
-								epmChannel->_description = qtExcel.getCellValue(QString("E%1").arg(row)).toString();
-								epmChannel->_resistorValue = qtExcel.getCellValue(QString("F%1").arg(row)).toDouble(&okay);
-								if (!okay)
-									epmChannel->_resistorValue = -1;
-								value = qtExcel.getCellValue(QString("G%1").arg(row)).toString().toLower();
-
-								epmChannel->setActive(value == "t");
-
-								epmFile->addChannel(epmChannel);
-							}
-						}
-						catch (...)
-						{
-
-						}
-
-						row++;
-					}
-				}
-			}
-
-			qtExcel.quit();
-
-			epmFile->sort(_EPMChannel::eIndex);
-			epmFile->sort(_EPMChannel::eType);
-
-			if (fileName.endsWith(".xlsx"))
-				_epmFilePath = fileName.replace(".xlsx", ".ccnf");
-
-			setEPMConfigFile(epmFile);
-			populateFields();
-		}
-	}
-
-#endif
 
 	return result;
 }

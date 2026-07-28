@@ -81,20 +81,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="_useCSVCheckbox">
-        <property name="text">
-         <string>Use CSV only</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="_exitExcelCB">
-        <property name="text">
-         <string>Exit Excel on Finish</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QLabel" name="label_2">

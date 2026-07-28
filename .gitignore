@@ -31,7 +31,6 @@ __pycache__/
 
 # Build directories for the C# API
 EPMDevInterop/obj/
-TACDevInterop/obj/
 
 # Qt build files
 .qtcreator/

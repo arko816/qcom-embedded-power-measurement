@@ -38,18 +38,12 @@ public:
 	void setRunLogPath(const QString& logPath);
 	void saveRunLogPath(const QString& loggingPath);
 
-	QString defaultPlatformConfigLocation();
-	QString platformConfigLocation();
-	void setPlatformConfigLocation(const QString& platformConfigLocation);
-	void savePlatformConfigLocation(const QString& saveLocation);
-
 protected:
 	QByteArray					_appName;
 	QByteArray					_appVersion;
 	bool						_loggingActive{false};
 	QString						_appLoggingPath;
 	QString						_runLoggingPath;
-	QString						_platformConfigLocation;
 };
 
 #endif // PREFERENCESBASE_H

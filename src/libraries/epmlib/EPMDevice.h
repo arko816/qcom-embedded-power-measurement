@@ -69,7 +69,7 @@ public:
 	}
 
 	static void updateDeviceList();
-	static quint32 getEPMDevices(EPMDevices& tacDevices);
+	static quint32 getEPMDevices(EPMDevices& epmDevices);
 	static quint32 deviceCount();
 	static EPMDevice device(quint32 index);
 	static EPMDevice deviceByHash(HashType hash);

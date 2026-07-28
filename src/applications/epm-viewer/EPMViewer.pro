@@ -1,4 +1,4 @@
-# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+﻿# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 # SPDX-License-Identifier: BSD-3-Clause
 
 
@@ -28,7 +28,6 @@ DEPENDPATH += $$LIBEPM
 DEPENDPATH += $$QWTINC
 
 win32 {
-	QT += axcontainer # for Excel operations
 
 	CONFIG(debug, debug|release) {
 		PRE_TARGETDEPS += $$STATIC_LIBPATH/QCommond.lib
@@ -92,7 +91,7 @@ linux {
 }
 
 win32 {
-	LIBS += -lLibExcel -lSetupAPI -lWinusb -lAdvapi32 -lOle32
+	LIBS += -lSetupAPI -lWinusb -lAdvapi32 -lOle32
 }
 
 RESOURCES += \

@@ -96,7 +96,7 @@ jobs:
         pip install aqtinstall
         aqt install-qt windows desktop ${{ matrix.qt_version }} win64_msvc2022_64 `
           --outputdir "C:\Qt" `
-          -m qtserialport qtmultimedia qtactiveqt
+          -m qtserialport qtmultimedia
 
     - name: Configure CMake (${{ matrix.build_type }})
       shell: pwsh

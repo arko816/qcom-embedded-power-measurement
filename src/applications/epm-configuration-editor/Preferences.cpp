@@ -3,7 +3,7 @@
 
 #include "Preferences.h"
 
-// TAC
+// EPM Configuration Editor
 #include "EPMEditorDefines.h"
 #include "EPMConfigurationApplication.h"
 

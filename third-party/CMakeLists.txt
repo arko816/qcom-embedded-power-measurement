@@ -8,9 +8,33 @@ include(FetchContent)
 
 set(CMAKE_AUTOMOC_RELAXED_MODE ON)
 
+set(QEPM_QWT_ARCHIVE "" CACHE FILEPATH "Optional local Qwt 6.3.0 source archive")
+set(QEPM_QWT_SHA256 "268D8D41974D263014FEA13168324452F41E02880DB573794F559995A4E11331")
+set(QEPM_QWT_URL "https://sourceforge.net/projects/qwt/files/qwt/6.3.0/qwt-6.3.0.zip")
+
+if(QEPM_QWT_ARCHIVE)
+    get_filename_component(QEPM_QWT_ARCHIVE "${QEPM_QWT_ARCHIVE}" ABSOLUTE)
+
+    if(NOT EXISTS "${QEPM_QWT_ARCHIVE}")
+        message(FATAL_ERROR "QEPM_QWT_ARCHIVE does not exist: ${QEPM_QWT_ARCHIVE}")
+    endif()
+
+    file(SHA256 "${QEPM_QWT_ARCHIVE}" QEPM_QWT_ARCHIVE_SHA256)
+    string(TOUPPER "${QEPM_QWT_ARCHIVE_SHA256}" QEPM_QWT_ARCHIVE_SHA256)
+    if(NOT QEPM_QWT_ARCHIVE_SHA256 STREQUAL QEPM_QWT_SHA256)
+        message(FATAL_ERROR
+            "QEPM_QWT_ARCHIVE SHA-256 mismatch. "
+            "Expected ${QEPM_QWT_SHA256}, found ${QEPM_QWT_ARCHIVE_SHA256}.")
+    endif()
+
+    set(QEPM_QWT_URL "${QEPM_QWT_ARCHIVE}")
+    message(STATUS "Using verified local Qwt archive: ${QEPM_QWT_ARCHIVE}")
+endif()
+
 FetchContent_Declare(
     qwt_source
-    URL https://sourceforge.net/projects/qwt/files/qwt/6.3.0/qwt-6.3.0.zip
+    URL "${QEPM_QWT_URL}"
+    URL_HASH "SHA256=${QEPM_QWT_SHA256}"
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 

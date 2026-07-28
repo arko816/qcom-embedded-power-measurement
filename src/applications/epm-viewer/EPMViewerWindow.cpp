@@ -16,11 +16,6 @@
 #include "ApplicationEnhancements.h"
 #include "Range.h"
 
-// LibExcel
-#ifdef Q_OS_WINDOWS
-	#include "QTExcel.h"
-#endif
-
 // libEPM
 #include "ColorConversion.h"
 #include "SeriesDataWindow.h"
@@ -54,14 +49,6 @@ EPMViewerWindow::EPMViewerWindow
 	setupUi(this);
 
 	setWindowTitle("EPM Viewer");
-
-#ifdef Q_OS_WINDOWS
-	_excelAvailable = QTExcel::excelAvailable();
-#endif
-
-#ifdef Q_OS_LINUX
-	_excelAvailable = false;
-#endif
 
 	_channelTable->setColumns(EPMChannelTable::CurrentColumnVisible | EPMChannelTable::VoltageColumnVisible | EPMChannelTable::DataColumnVisible);
 
@@ -1143,7 +1130,6 @@ void EPMViewerWindow::on__exportButton_clicked()
 	QString exportDirectory = _preferences->exportLocation();
 	bool exportOnlyActiveItems{_preferences->exportSelectedItems()};
 	bool exportByTimespan{_preferences->useTimespan()};
-	bool exportAsCSV{_preferences->useCSV()};
 
 	HashTuples hashTuples;
 
@@ -1196,10 +1182,7 @@ void EPMViewerWindow::on__exportButton_clicked()
 			_udasFile.setExportTimeSpan(start, end);
 		}
 
-		if (_excelAvailable && exportAsCSV == false)
-			result = _udasFile.exportAsExcel(exportDirectory, hashTuples, _preferences->quitExcelOnFinish());
-		else
-			result = _udasFile.exportAsCVS(exportDirectory, hashTuples);
+		result = _udasFile.exportAsCVS(exportDirectory, hashTuples);
 
 		if (result == false)
 			errorMessage = _udasFile.lastErrorMessage();

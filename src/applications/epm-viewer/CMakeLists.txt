@@ -28,7 +28,6 @@ qepm_add_version_info(EPMViewer
 )
 
 if(WIN32)
-    target_link_libraries(EPMViewer PRIVATE Qt6::AxContainer)
 endif()
 
 if(UNIX AND NOT APPLE)

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "product": "QEPM",
+  "architecture": "x64",
+  "configuration": "Release",
+  "runtimeOutput": "__Builds/x64/Release/bin/Release",
+  "configurationPath": "configurations",
+  "configurationPattern": "*.ccnf",
+  "expectedConfigurationCount": 81,
+  "requiredExecutables": [
+    "EPM.exe",
+    "EPMConfigurationEditor.exe",
+    "EPMScope.exe",
+    "EPMViewer.exe",
+    "EPMDump.exe",
+    "PSOCProgrammer.exe",
+    "SCLDump.exe",
+    "BugWriter.exe"
+  ],
+  "requiredInterfaces": [
+    "EPMDev.dll",
+    "UDASDev.dll"
+  ],
+  "installRoot": "${env:ProgramFiles}\\Qualcomm\\QEPM",
+  "configurationInstallRoot": "${env:ProgramData}\\Qualcomm\\Alpaca\\epm_configs",
+  "documentationRequired": false
+}

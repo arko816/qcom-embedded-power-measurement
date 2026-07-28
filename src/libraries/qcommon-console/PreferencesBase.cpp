@@ -10,7 +10,6 @@
 const QString kLoggingEnabled(QStringLiteral("logEnabled"));
 const QString kAppLogLocation(QStringLiteral("appLogLocation"));
 const QString kRunLogLocation(QStringLiteral("runLogLocation"));
-const QString kPlatformConfigLocation(QStringLiteral("platformConfigLocation"));
 
 PreferencesBase::PreferencesBase()
 {
@@ -32,7 +31,6 @@ void PreferencesBase::setAppName
 	_loggingActive = settings.value(kLoggingEnabled, defaultLoggingState()).toBool();
 	_appLoggingPath = killOneDrive(settings.value(kAppLogLocation, defaultAppLogPath()).toString(), defaultAppLogPath());
 	_runLoggingPath = killOneDrive(settings.value(kRunLogLocation, defaultRunLogPath()).toString(), defaultRunLogPath());
-	_platformConfigLocation = killOneDrive(defaultPlatformConfigLocation(), defaultPlatformConfigLocation());
 	settings.endGroup();
 }
 
@@ -137,33 +135,5 @@ void PreferencesBase::saveRunLogPath
 	settings.beginGroup(kPreferences);
 	settings.setValue(kRunLogLocation, _runLoggingPath);
 	settings.endGroup();
-}
-
-QString PreferencesBase::defaultPlatformConfigLocation()
-{
-	QString result;
-
-#ifdef DEBUG
-	result = "C:\\github\\open-source\\qcom-test-automation-controller\\configurations\\";
-#else
-	result = tacConfigRoot();
-#endif
-
-	return result;
-}
-
-QString PreferencesBase::platformConfigLocation()
-{
-	return _platformConfigLocation;
-}
-
-void PreferencesBase::setPlatformConfigLocation(const QString& platformConfigLocation)
-{
-	Q_UNUSED(platformConfigLocation);
-}
-
-void PreferencesBase::savePlatformConfigLocation(const QString& saveLocation)
-{
-	Q_UNUSED(saveLocation);
 }
 

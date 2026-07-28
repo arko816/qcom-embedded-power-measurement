@@ -116,9 +116,7 @@ def GetErrorString(errorCode: int) -> str:
     return errorDict.get(errorCode, f"Error string cannot be determine. Error code: {errorCode}")
 
 
-global __tacLib
 global __QEPMVersionFunc
-global __tacVersionFunc
 global __getDeviceCountFunc
 global __getDeviceFunc
 

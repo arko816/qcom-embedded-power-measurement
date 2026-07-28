@@ -1,60 +1,66 @@
-## Contributing to Qualcomm Test Automation Controller (QTAC)
+## Contributing to Qualcomm Embedded Power Measurement (QEPM)
 
 Hi there!
 
-We’re thrilled that you’d like to contribute to this project.
-Your help is essential for keeping this project great and for making it better.
+We are thrilled that you would like to contribute to this project.
+Your help is essential for keeping this project useful and making it better.
 
 ## Branching Strategy
-In general, contributors should develop on branches based off of `develop` and pull requests should be made against `develop`.
+
+In general, contributors should develop on branches based on `main`, and pull requests should be made against `main`.
 
 ## Submitting a pull request
-1. Please read our [code of conduct](CODE-OF-CONDUCT.md) and [license](LICENSE).
 
-2. [Fork](https://github.com/qualcomm/qcom-test-automation-controller/fork) and clone the repository.
-    ```bash
-    git clone https://github.com/<username>/qcom-test-automation-controller.git
-    ```
-3. Create a new branch based on `develop`:
-    ```bash
-    git checkout -b <my-branch-name> develop
-    ```
-4. Create an upstream `remote` to make it easier to keep your branches up-to-date:
-    ```bash
-    git remote add upstream https://github.com/qualcomm/qcom-test-automation-controller.git
-    ```
+1. Read the [code of conduct](CODE-OF-CONDUCT.md) and [license](LICENSE).
 
-5. Make your changes, add tests, and make sure tests passes.
+2. [Fork](https://github.com/qualcomm/qcom-embedded-power-measurement/fork) and clone the repository.
 
-6. Commit your changes using the [DCO](http://developercertificate.org/). You can attest to the DCO by commiting with the **-s** or **--signoff** options or manually adding the "Signed-off-by":
-    ```bash
-    git commit -s -m "Really useful commit message"`
-    ```
+   ```bash
+   git clone https://github.com/<username>/qcom-embedded-power-measurement.git
+   ```
 
-7. After committing your changes on the topic branch, sync it with the upstream branch:
-    ```bash
-    git pull --rebase upstream main
-    ```
+3. Create a new branch based on `main`.
+
+   ```bash
+   git checkout -b <my-branch-name> main
+   ```
+
+4. Add the public repository as an upstream remote.
+
+   ```bash
+   git remote add upstream https://github.com/qualcomm/qcom-embedded-power-measurement.git
+   ```
+
+5. Make your changes, add tests, and verify that the relevant builds and tests pass.
+
+6. Commit your changes using the [DCO](http://developercertificate.org/). You can attest to the DCO using the `-s` or `--signoff` option, or by manually adding a `Signed-off-by` line.
+
+   ```bash
+   git commit -s -m "Describe the change"
+   ```
+
+7. Synchronize your topic branch with upstream `main`.
+
+   ```bash
+   git pull --rebase upstream main
+   ```
 
 8. Push to your fork.
-    ```bash
-    git push -u origin <my-branch-name>
-    ```
 
-    The `-u` is shorthand for `--set-upstream`. This will set up the tracking reference so subsequent runs of `git push` or `git pull` can omit the remote and branch.
+   ```bash
+   git push -u origin <my-branch-name>
+   ```
 
-9. [Submit a pull request](https://github.com/qualcomm/qcom-test-automation-controller/pulls) from your branch to `develop`.
+9. [Submit a pull request](https://github.com/qualcomm/qcom-embedded-power-measurement/pulls) from your branch to `main`.
 
-10. Pat yourself on the back and wait for your pull request to be reviewed.
+10. Wait for review and address feedback.
 
-Here are a few things you can do that will increase the likelihood of your pull request to be accepted:
+## Contribution guidance
 
-- Use GitHub issues to report bugs, propose features, suggest architecture adjustments, or make modifications to the core codebase.
-- Provide documentation to support any changes that alter existing behavior.
-- Follow [LLVM coding conventions](https://llvm.org/docs/CodingStandards.html) when contributing new code to the repository.
-> **_NOTE:_** The current codebase incorporates a mix of coding styles, and we are in the process of transitioning to LLVM coding standards for consistency.
-- Write unit tests.
-- Keep your change as focused as possible.
-  If you want to make multiple independent changes, please consider submitting them as separate pull requests.
-- Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
-- It's a good idea to arrange a discussion with other developers to ensure there is consensus on large features, architecture changes, and other core code changes. PR reviews will go much faster when there are no surprises.
+- Use GitHub issues to report bugs, propose features, or discuss architecture changes.
+- Document changes that alter supported behavior.
+- Follow [LLVM coding conventions](https://llvm.org/docs/CodingStandards.html) for new code where practical.
+- Add or update tests.
+- Keep each change focused.
+- Use clear commit messages.
+- Discuss large changes with maintainers before implementation.

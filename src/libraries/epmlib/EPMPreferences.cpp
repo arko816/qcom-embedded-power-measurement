@@ -3,7 +3,7 @@
 
 #include "EPMPreferences.h"
 
-// TAC
+// EPMLib
 #include "EPMDefines.h"
 
 // QCommon

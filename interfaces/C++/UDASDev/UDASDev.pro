@@ -61,5 +61,4 @@ CONFIG(debug, debug|release) {
 }
 
 win32 {
-    LIBS += -lLibExcel
 }

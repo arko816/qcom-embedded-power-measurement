@@ -83,7 +83,7 @@ QString documentsDataPath
 		appName = "QEPM";
 
 #ifdef Q_OS_WIN
-	// QStandardPaths would return the "One Drive" location. Excel documents don't like living here
+	// Use the local Documents directory instead of a redirected OneDrive location.
 	result = QDir::homePath() + QDir::separator() + "Documents";
 #else
 	result = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
@@ -310,34 +310,6 @@ QString expandPath(const QString &filePath)
 			result.replace("~", "/root");
 	}
 #endif
-
-	return result;
-}
-
-QString tacConfigRoot(bool expandThePath)
-{
-	Q_UNUSED(expandThePath);
-
-	QString result;
-
-	AlpacaSettings settings("QEPM");
-	settings.beginGroup(kPreferences);
-	bool allowConfigUpdates = settings.value("allowConfigUpdates", false).toBool();
-	settings.endGroup();
-
-	QString appName{"QEPM"};
-
-	if (allowConfigUpdates)
-	{
-		#ifdef Q_OS_WIN
-			result = "C:/Program Files (x86)/Qualcomm/Shared/"+ appName + "/";
-		#endif
-		#ifdef Q_OS_LINUX
-			result = "/opt/qcom/Shared/"+ appName + "/";
-		#endif
-	}
-	else
-		result = applicationDataPath() + "/tac_configs/";
 
 	return result;
 }
