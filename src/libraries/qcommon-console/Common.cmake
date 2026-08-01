@@ -15,7 +15,12 @@ if(WIN32)
 endif()
 
 if(UNIX)
-    list(APPEND QCOMMONCONSOLE_DEFINITIONS __X86_64__)
+    # Detect architecture for Linux builds
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64|ARM64")
+        list(APPEND QCOMMONCONSOLE_DEFINITIONS __AARCH64__)
+    else()
+        list(APPEND QCOMMONCONSOLE_DEFINITIONS __X86_64__)
+    endif()
     set(QCOMMONCONSOLE_CXX_FLAGS
         -Werror
         -Wno-unused-result
@@ -40,20 +45,27 @@ if(UNIX)
     )
 endif()
 
+# Determine architecture label for output directory
+if(WIN32)
+    if(CMAKE_GENERATOR_PLATFORM STREQUAL "ARM64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "ARM64|aarch64")
+        set(_QEPM_ARCH "ARM64")
+    else()
+        set(_QEPM_ARCH "x64")
+    endif()
+elseif(UNIX)
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64|ARM64")
+        set(_QEPM_ARCH "Linux-ARM64")
+    else()
+        set(_QEPM_ARCH "Linux")
+    endif()
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     list(APPEND QCOMMONCONSOLE_DEFINITIONS _DEBUG DEBUG)
-    if(WIN32)
-        set(CONFIGURATION "x64/Debug")
-    else()
-        set(CONFIGURATION "Linux/Debug")
-    endif()
+    set(CONFIGURATION "${_QEPM_ARCH}/Debug")
 else()
     list(APPEND QCOMMONCONSOLE_DEFINITIONS _NDEBUG NDEBUG)
-    if(WIN32)
-        set(CONFIGURATION "x64/Release")
-    else()
-        set(CONFIGURATION "Linux/Release")
-    endif()
+    set(CONFIGURATION "${_QEPM_ARCH}/Release")
 endif()
 
 set(BUILDROOT ${CMAKE_SOURCE_DIR}/__Builds/${CONFIGURATION})
@@ -62,7 +74,20 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${BUILDROOT}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${BUILDROOT}/lib)
 
 if(WIN32)
-    find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${Qt6_DIR}/../../../bin")
+    # For cross-compilation (e.g. ARM64 target on x64 host), windeployqt must
+    # come from the HOST Qt installation, not the target sysroot.
+    # QT_HOST_PATH is set by cmake when cross-compiling; fall back to Qt6_DIR.
+    if(DEFINED QT_HOST_PATH)
+        find_program(WINDEPLOYQT_EXECUTABLE windeployqt
+            HINTS "${QT_HOST_PATH}/bin"
+            NO_DEFAULT_PATH
+        )
+    endif()
+    if(NOT WINDEPLOYQT_EXECUTABLE)
+        find_program(WINDEPLOYQT_EXECUTABLE windeployqt
+            HINTS "${Qt6_DIR}/../../../bin"
+        )
+    endif()
     if(NOT WINDEPLOYQT_EXECUTABLE)
         set(WINDEPLOYQT_EXECUTABLE windeployqt)
     endif()
