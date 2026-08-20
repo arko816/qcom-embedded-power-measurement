@@ -61,13 +61,6 @@ jobs:
         chmod +x build.sh
         ./build.sh
 
-    - name: Upload Linux Release binaries
-      uses: actions/upload-artifact@v4
-      with:
-        name: QEPM-linux-${{ matrix.os }}-qt${{ matrix.qt_version }}-Release
-        path: __Builds/Linux/Release/
-        retention-days: 30
-
     - name: Package QEPM
       run: |
         chmod +x packaging/linux/package_QEPM.sh
