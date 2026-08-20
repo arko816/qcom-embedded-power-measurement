@@ -7,7 +7,6 @@
 set -euo pipefail
 
 PKG_NAME="${PKG_NAME:-qualcomm-qepm}"
-VERSION="${VERSION:-1.0.0}"
 ARCH="${ARCH:-x64}"
 MAINTAINER="${MAINTAINER:-Maintainer <maintainer@example.com>}"
 DESCRIPTION="${DESCRIPTION:-Qualcomm Embedded Power Measurement tool package}"
@@ -24,6 +23,16 @@ esac
 OPTION_ZIP="${1:-}"
 
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Auto-detect version from version.h if not set
+if [ -z "${VERSION:-}" ]; then
+    VERSION_FILE="$BASE_DIR/../../src/libraries/qcommon-console/version.h"
+    if [ -f "$VERSION_FILE" ]; then
+        VERSION=$(grep -oP '(?<=#define QEPM_VERSION\s+")[^"]+' "$VERSION_FILE" || echo "5.5.2")
+    else
+        VERSION="5.5.2"
+    fi
+fi
 
 # Source directories
 SRC_DIR="$(realpath "$BASE_DIR/../../__Builds/Linux/Release")"

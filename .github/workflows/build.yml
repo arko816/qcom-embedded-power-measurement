@@ -10,7 +10,6 @@ jobs:
       matrix:
         os: [ubuntu-22.04, ubuntu-latest]
         qt_version: ['6.9.2', '6.10.0']
-        build_type: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v6
@@ -40,6 +39,7 @@ jobs:
     - name: Set Qt install path
       run: |
         echo "QT_ROOT_DIR=${{ github.workspace }}/${{ matrix.qt_version }}/gcc_64" >> $GITHUB_ENV
+        echo "QTBIN=${{ github.workspace }}/${{ matrix.qt_version }}/gcc_64/bin" >> $GITHUB_ENV
         echo "${{ github.workspace }}/${{ matrix.qt_version }}/gcc_64/bin" >> $GITHUB_PATH
 
     - name: Cache Qt ${{ matrix.qt_version }}
@@ -85,7 +85,6 @@ jobs:
     strategy:
       matrix:
         qt_version: ['6.9.2', '6.10.0']
-        build_type: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v6
