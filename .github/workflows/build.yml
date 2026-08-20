@@ -57,7 +57,9 @@ jobs:
         aqt install-qt linux desktop ${{ matrix.qt_version }} linux_gcc_64 -m qtmultimedia qtserialport
 
     - name: Build
-      run: ./build.sh
+      run: |
+        chmod +x build.sh
+        ./build.sh
 
     - name: Upload Linux Release binaries
       uses: actions/upload-artifact@v4
