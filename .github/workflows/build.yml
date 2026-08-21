@@ -110,8 +110,9 @@ jobs:
       run: choco install netfx-4.8-devpack -y
 
     - name: Build
-      shell: cmd
-      run: build.bat
+      shell: pwsh
+      run: |
+        cmd /c build.bat
 
     - name: Build installer (QEPM-windows-x64.exe)
       shell: pwsh
